@@ -7,13 +7,17 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/chat", async (req, res) => {
+ const body = {
+  ...req.body,
+  stream: false
+  };
   const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
     },
-    body: JSON.stringify(req.body)
+    body: JSON.stringify(body)
   });
   const data = await groqRes.json();
   res.json(data);
